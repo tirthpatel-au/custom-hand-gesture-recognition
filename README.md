@@ -7,8 +7,6 @@ Real-time custom hand gesture recognition in Python using Google MediaPipe hand 
 - Repository: [custom-hand-gesture-recognition](https://github.com/tirthpatel-au/custom-hand-gesture-recognition)
 - Local demo command: `python gesture_recognizer.py --mirror`
 
-If you want a public video demo link later, you can add a YouTube or GitHub asset URL in this section after recording a short screen capture.
-
 ## Features
 
 - Real-time hand landmark detection from webcam or video
