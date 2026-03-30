@@ -146,7 +146,9 @@ function classifyGesture(landmarks, handedness, mirrored) {
 function drawHand(landmarks, handedness, mirrored, gesture) {
   const width = canvas.width;
   const height = canvas.height;
-  const xPoints = landmarks.map((point) => point.x * width);
+  const toCanvasX = (point) => (mirrored ? (1 - point.x) * width : point.x * width);
+  const toCanvasY = (point) => point.y * height;
+  const xPoints = landmarks.map((point) => toCanvasX(point));
   const yPoints = landmarks.map((point) => point.y * height);
   const padding = 20;
   const left = Math.max(0, Math.min(...xPoints) - padding);
@@ -176,8 +178,8 @@ function drawHand(landmarks, handedness, mirrored, gesture) {
     ctx.strokeStyle = "rgba(244, 244, 244, 0.95)";
     ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(start.x * width, start.y * height);
-    ctx.lineTo(end.x * width, end.y * height);
+    ctx.moveTo(toCanvasX(start), toCanvasY(start));
+    ctx.lineTo(toCanvasX(end), toCanvasY(end));
     ctx.stroke();
   }
 
@@ -185,7 +187,7 @@ function drawHand(landmarks, handedness, mirrored, gesture) {
     const isTip = Object.values(TIP_IDS).includes(index);
     ctx.fillStyle = isTip ? "#ffd44f" : "#ff5f5f";
     ctx.beginPath();
-    ctx.arc(point.x * width, point.y * height, isTip ? 7 : 6, 0, Math.PI * 2);
+    ctx.arc(toCanvasX(point), toCanvasY(point), isTip ? 7 : 6, 0, Math.PI * 2);
     ctx.fill();
     ctx.strokeStyle = "#ffffff";
     ctx.lineWidth = 2;
@@ -267,9 +269,8 @@ async function startCamera() {
 
   video.srcObject = webcamStream;
   await video.play();
-  const transform = mirrorToggle.checked ? "scaleX(-1)" : "scaleX(1)";
-  video.style.transform = transform;
-  canvas.style.transform = transform;
+  video.style.transform = mirrorToggle.checked ? "scaleX(-1)" : "scaleX(1)";
+  canvas.style.transform = "scaleX(1)";
   permissionOverlay.classList.add("hidden");
   running = true;
   startButton.disabled = true;
@@ -298,9 +299,8 @@ function stopCamera() {
 }
 
 mirrorToggle.addEventListener("change", () => {
-  const transform = mirrorToggle.checked ? "scaleX(-1)" : "scaleX(1)";
-  video.style.transform = transform;
-  canvas.style.transform = transform;
+  video.style.transform = mirrorToggle.checked ? "scaleX(-1)" : "scaleX(1)";
+  canvas.style.transform = "scaleX(1)";
 });
 
 startButton.addEventListener("click", () => {
