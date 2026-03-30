@@ -4,9 +4,11 @@ Real-time custom hand gesture recognition in Python using Google MediaPipe hand 
 
 ## Demo
 
+- Live demo: [Try it in your browser](https://tirthpatel-au.github.io/custom-hand-gesture-recognition/)
 - Repository: [custom-hand-gesture-recognition](https://github.com/tirthpatel-au/custom-hand-gesture-recognition)
-- Local demo command: `python gesture_recognizer.py --mirror`
+- Local Python demo: `python gesture_recognizer.py --mirror`
 
+The live demo is powered by a browser-based MediaPipe version in [`docs/`](docs). After GitHub Pages is enabled for the repository, pushes to `main` redeploy it automatically through [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml).
 ## Features
 
 - Real-time hand landmark detection from webcam or video
@@ -34,6 +36,13 @@ Real-time custom hand gesture recognition in Python using Google MediaPipe hand 
 
 ```text
 .
+|-- .github/
+|   `-- workflows/
+|       `-- deploy-pages.yml
+|-- docs/
+|   |-- app.js
+|   |-- index.html
+|   `-- styles.css
 |-- gesture_recognizer.py
 |-- requirements.txt
 |-- LICENSE
@@ -64,6 +73,13 @@ Run with your webcam:
 ```powershell
 python gesture_recognizer.py --mirror
 ```
+
+Try the browser version:
+
+- Open [the live demo](https://tirthpatel-au.github.io/custom-hand-gesture-recognition/)
+- Click `Start Camera`
+- Allow webcam access
+- Test gestures directly in the browser
 
 Run on a video file:
 
@@ -99,6 +115,8 @@ On first run, the script downloads Google's official hand landmark model file:
 
 The file is stored locally in the project folder and is ignored by git.
 
+The browser demo does not download this local file into the repo. It loads the official MediaPipe web model from Google's hosted model storage at runtime.
+
 ## Troubleshooting
 
 If PowerShell blocks virtual environment activation:
@@ -125,7 +143,7 @@ If your hand is detected but the label is occasionally wrong:
 - Add a training mode for custom gestures
 - Save landmark datasets for ML classification
 - Trigger desktop shortcuts or app actions from gestures
-- Add a proper recorded demo video or animated preview
+- Add a recorded preview GIF alongside the live demo link
 
 ## License
 

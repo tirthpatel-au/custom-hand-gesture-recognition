@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Hand Gesture Recognition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Browser Demo</p>
+        <h1>Try hand gesture recognition instantly in your browser.</h1>
+        <p class="lead">
+          This demo uses MediaPipe Hand Landmarker in the browser and a custom gesture classifier on top of the detected hand landmarks.
+        </p>
+        <div class="hero-actions">
+          <button id="startButton" class="primary">Start Camera</button>
+          <button id="stopButton" class="secondary" disabled>Stop</button>
+        </div>
+        <p id="statusText" class="status">Loading browser demo…</p>
+      </div>
+      <div class="hero-panel">
+        <div class="signal-card">
+          <span class="signal-label">Detected Gesture</span>
+          <strong id="gestureName">Waiting…</strong>
+          <span id="gestureMeta" class="signal-meta">Enable the camera to begin.</span>
+        </div>
+        <div class="gesture-grid">
+          <div class="gesture-chip">Open Palm</div>
+          <div class="gesture-chip">Fist</div>
+          <div class="gesture-chip">Peace</div>
+          <div class="gesture-chip">Thumbs Up</div>
+          <div class="gesture-chip">Okay</div>
+          <div class="gesture-chip">Pointing Up</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="demo-layout">
+      <section class="viewer-card">
+        <div class="viewer-head">
+          <h2>Live Camera</h2>
+          <label class="toggle">
+            <input id="mirrorToggle" type="checkbox" checked>
+            <span>Mirror preview</span>
+          </label>
+        </div>
+        <div class="viewer-stage">
+          <video id="camera" autoplay playsinline muted></video>
+          <canvas id="overlay"></canvas>
+          <div id="permissionOverlay" class="permission-overlay">
+            <p>Camera access is required to try the live hand gesture demo.</p>
+          </div>
+        </div>
+      </section>
+
+      <aside class="sidebar">
+        <section class="info-card">
+          <h3>How to test</h3>
+          <ul>
+            <li>Show a full open hand for <strong>Open Palm</strong>.</li>
+            <li>Close your hand into a fist for <strong>Fist</strong>.</li>
+            <li>Raise index and middle fingers for <strong>Peace</strong>.</li>
+            <li>Raise only your thumb for <strong>Thumbs Up</strong>.</li>
+          </ul>
+        </section>
+
+        <section class="info-card">
+          <h3>Notes</h3>
+          <ul>
+            <li>The demo runs fully in the browser after loading the MediaPipe model.</li>
+            <li>Results are heuristic-based, so unusual angles can still confuse the label.</li>
+            <li>Better lighting and a clear hand silhouette improve accuracy.</li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
