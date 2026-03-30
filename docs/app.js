@@ -209,10 +209,11 @@ function renderLoop() {
     if (timestamp > lastTimestamp) {
       lastTimestamp = timestamp;
       const result = handLandmarker.detectForVideo(video, timestamp);
+      const handLandmarks = result.landmarks ?? [];
 
-      if (result.handLandmarks.length > 0) {
+      if (handLandmarks.length > 0) {
         const firstGesture = classifyGesture(
-          result.handLandmarks[0],
+          handLandmarks[0],
           result.handedness[0][0].categoryName,
           mirrorToggle.checked,
         );
@@ -222,7 +223,7 @@ function renderLoop() {
           `${result.handedness[0][0].categoryName} hand | confidence ${firstGesture.confidence.toFixed(2)}`,
         );
 
-        result.handLandmarks.forEach((landmarks, index) => {
+        handLandmarks.forEach((landmarks, index) => {
           const handedness = result.handedness[index][0].categoryName;
           const gesture = classifyGesture(landmarks, handedness, mirrorToggle.checked);
           drawHand(landmarks, handedness, mirrorToggle.checked, gesture);
