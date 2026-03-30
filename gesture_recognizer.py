@@ -89,14 +89,21 @@ class HandGestureRecognizer:
         landmarks = hand_landmarks
         fingers_up = {}
 
-        effective_hand_label = hand_label
-        if mirrored:
-            effective_hand_label = "Left" if hand_label == "Right" else "Right"
+        thumb_tip = landmarks[TIP_IDS["thumb"]]
+        thumb_ip = landmarks[PIP_IDS["thumb"]]
+        thumb_mcp = landmarks[2]
+        index_mcp = landmarks[5]
+        wrist = landmarks[0]
 
-        if effective_hand_label == "Right":
-            fingers_up["thumb"] = landmarks[TIP_IDS["thumb"]].x < landmarks[PIP_IDS["thumb"]].x
-        else:
-            fingers_up["thumb"] = landmarks[TIP_IDS["thumb"]].x > landmarks[PIP_IDS["thumb"]].x
+        tip_to_index_base = ((thumb_tip.x - index_mcp.x) ** 2 + (thumb_tip.y - index_mcp.y) ** 2) ** 0.5
+        ip_to_index_base = ((thumb_ip.x - index_mcp.x) ** 2 + (thumb_ip.y - index_mcp.y) ** 2) ** 0.5
+        tip_to_wrist = ((thumb_tip.x - wrist.x) ** 2 + (thumb_tip.y - wrist.y) ** 2) ** 0.5
+        mcp_to_wrist = ((thumb_mcp.x - wrist.x) ** 2 + (thumb_mcp.y - wrist.y) ** 2) ** 0.5
+
+        fingers_up["thumb"] = (
+            tip_to_index_base > ip_to_index_base * 1.12
+            or tip_to_wrist > mcp_to_wrist * 1.2
+        )
 
         for finger in ("index", "middle", "ring", "pinky"):
             fingers_up[finger] = landmarks[TIP_IDS[finger]].y < landmarks[PIP_IDS[finger]].y

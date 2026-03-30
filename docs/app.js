@@ -75,14 +75,21 @@ async function createHandLandmarker() {
 
 function isFingerUp(landmarks, finger, handedness, mirrored) {
   if (finger === "thumb") {
-    let effective = handedness;
-    if (mirrored) {
-      effective = handedness === "Right" ? "Left" : "Right";
-    }
-    if (effective === "Right") {
-      return landmarks[TIP_IDS.thumb].x < landmarks[PIP_IDS.thumb].x;
-    }
-    return landmarks[TIP_IDS.thumb].x > landmarks[PIP_IDS.thumb].x;
+    const thumbTip = landmarks[TIP_IDS.thumb];
+    const thumbIp = landmarks[PIP_IDS.thumb];
+    const thumbMcp = landmarks[2];
+    const indexMcp = landmarks[5];
+    const wrist = landmarks[0];
+
+    const tipToIndexBase = Math.hypot(thumbTip.x - indexMcp.x, thumbTip.y - indexMcp.y);
+    const ipToIndexBase = Math.hypot(thumbIp.x - indexMcp.x, thumbIp.y - indexMcp.y);
+    const tipToWrist = Math.hypot(thumbTip.x - wrist.x, thumbTip.y - wrist.y);
+    const mcpToWrist = Math.hypot(thumbMcp.x - wrist.x, thumbMcp.y - wrist.y);
+
+    const extendedAwayFromPalm = tipToIndexBase > ipToIndexBase * 1.12;
+    const extendedFromWrist = tipToWrist > mcpToWrist * 1.2;
+
+    return extendedAwayFromPalm || extendedFromWrist;
   }
   return landmarks[TIP_IDS[finger]].y < landmarks[PIP_IDS[finger]].y;
 }
